@@ -1,6 +1,9 @@
 body{
-    background-color: whitesmoke;
-    font-family: 'segoe ui';
+    background-color: #FDF6E3;
+    background-image: linear-gradient(90deg, transparent 79px, #abced4 79px, #111212 81px, transparent 81px), linear-gradient(#130e0e .1em, transparent .1em);
+    background-size: 100% 30px;
+    font-family: 'Times New Roman', Times, serif;
+    height: 100vh;
     margin: 0;
     padding: 0;
     display: flex;
@@ -13,12 +16,16 @@ body{
 
 main{
     text-align: center;
-    padding: 0;
-    background-color:aquamarine;
-    border-radius: 20px;
+    padding: 70px;
+    background-color: greenyellow;
+    border-radius: 60% 40% 30% 70% / 40% 30% 70% 60%;
+    box-shadow: 10px 10px 0px rgb(96, 94, 94);
 }
 
+
 .app-logo{
+    margin-top: -10px;
+    font-style: oblique;
     font-size: 3rem;
     font-weight: bold;
     margin-bottom: 10px;
@@ -26,7 +33,24 @@ main{
 }
 
 main p{
+    font-style: italic;
     font-size: 1.2rem;
     margin-bottom: 20px;
     color: black;
+}
+
+main p:hover{
+    color:red
+}
+
+#login-btn{
+    border-style: none;
+    padding: 16px;
+    border-radius: 20px
+}
+#register-btn{
+    border-style: none;
+    padding: 16px;
+    
+    border-radius: 20px
 }
