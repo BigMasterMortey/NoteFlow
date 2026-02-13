@@ -1,0 +1,32 @@
+body{
+    background-color: whitesmoke;
+    font-family: 'segoe ui';
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    text-transform: capitalize
+}
+
+main{
+    text-align: center;
+    padding: 0;
+    background-color:aquamarine;
+    border-radius: 20px;
+}
+
+.app-logo{
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: black;
+}
+
+main p{
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: black;
+}
