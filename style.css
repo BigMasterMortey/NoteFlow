@@ -74,3 +74,11 @@ main p:hover {
     transform: translateY(4px);
 }
 
+/*this section is for the login and register forms */
+#login-form {
+    display: none;;
+}
+
+#register-form {
+    display: none;
+}

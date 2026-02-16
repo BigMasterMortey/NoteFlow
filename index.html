@@ -9,19 +9,20 @@
 </head>
 <body>
     <main>
-       <div>       
+       <div id="landing-page">       
             <h1 class="app-logo">NoteFlow</h1>
             <p>Your personal note-taking assistant!</p>
             <button id="login-btn">Login</button>
             <button id="register-btn">Register</button> 
        </div>
+       <!-- this is the section for the login and register forms respectively -->
        <div id="login-form">
         <h2>Login</h2>
         <form action="">
             <input type="text" placeholder="Username">
             <input type="password" placeholder="Password">
             <button type="submit">Login</button>
-            <button id="back-btn">Back</button>
+            <button class="back-btn">Back</button>
         </form>
        </div>
        <div id="register-form">
@@ -31,9 +32,10 @@
             <input type="email" placeholder="Email">
             <input type="password" placeholder="Password">
             <button type="submit">Register</button>
-            <button id="back-btn">Back</button>
+            <button class="back-btn">Back</button>
         </form>
        </div>
     </main>
+<script src="app.js"></script>
 </body>
 </html>
