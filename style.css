@@ -76,9 +76,41 @@ main p:hover {
 
 /*this section is for the login and register forms */
 #login-form {
-    display: none;;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /*this makes sure that the login form is centered on the screen*/
+    display: none;/*this makes sure that the login form does not display on the main unless the logic calls for it*/
+    background-color: white;
+    border: 4px solid black;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 15px 15px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
 }
 
 #register-form {
+    display: none;/*this makes sure that the registration form does not display on the main unless the logic calls for it*/
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /*this makes sure that the login form is centered on the screen*/
+    background-color: white;
+    border: 4px solid black;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 15px 15px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+/*this section is for the Modal/ the Dimmer switch */
+#modal-overlay {
     display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 500;
 }
