@@ -1,4 +1,4 @@
-//1. we grab the buttons from the DOM
+//1. we grab the buttons/container from the DOM
 const loginBtn = document.getElementById('login-btn');
 const registrationBtn = document.getElementById('register-btn');
 const loginForm = document.getElementById('login-form');
@@ -6,6 +6,8 @@ const registrationForm = document.getElementById('register-form');
 const backButtons = document.querySelectorAll('back-btn');
 const landingPage = document.getElementById('landing-page');
 const modalOverlay = document.getElementById('modal-overlay');
+const verificationPage = document.getElementById('verification-form');
+const registrationSubmitBtn = document.getElementById('registration-submit-btn');
 
 
 
@@ -32,4 +34,9 @@ backButtons.forEach(button => {
     });
 });
 
-modalOverlay.addEventListener('click', goBack);
+registrationSubmitBtn.addEventListener('click', e =>{
+    e.preventDefault();
+    registrationForm.style.display = 'none';
+    verificationPage.style.display = 'block';
+    modalOverlay.style.display = 'block';
+})
