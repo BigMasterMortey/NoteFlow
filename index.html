@@ -7,9 +7,9 @@
     <title>NoteFlow | Welcome</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body id="landing-view" class="notebok-skin">
     <div id="modal-overlay"></div>
-    <main>
+    <main id="main">
        <div id="landing-page">       
             <h1 class="app-logo">NoteFlow</h1>
             <p>Your personal note-taking assistant!</p>
@@ -22,7 +22,7 @@
         <form action="">
             <input type="text" placeholder="Username">
             <input type="password" placeholder="Password">
-            <button type="submit">Login</button>
+            <button id="login-submit-btn" type="submit">Login</button>
             <button class="back-btn">Back</button>
         </form>
        </div>
@@ -39,7 +39,7 @@
         <form id="verification-form">
             <p><strong>Enter the code sent to your email</strong></p>
             <input type="text" inputmode="numeric" placeholder="Enter Code">
-            <button type="submit">submit</button>
+            <button class="Vefify-btn"type="submit">Verify</button>
             <button class="back-btn">Back</button>
         </form>
     </main>

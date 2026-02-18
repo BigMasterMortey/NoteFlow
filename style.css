@@ -1,10 +1,13 @@
-body {
+.notebook-skin {
     background-color: ivory;
     background-image: linear-gradient(90deg, transparent 79px, red 79px, red 81px, transparent 81px), 
                       linear-gradient(#130e0e 1px, transparent 1px);
     background-size: 100% 30px;
     font-family: 'Times New Roman', Times, serif;
     height: 100vh;
+}
+
+#landing-view {
     margin: 0;
     padding: 0;
     display: flex;
@@ -13,8 +16,18 @@ body {
     text-align: center;
     text-transform: capitalize
 }
-/* This is the code for the LandingPage for the application NoteFlow */
-main {
+/*This code is for the dashboard body*/
+#dashboard-view {
+    padding: 0;/*we will get back to it later */
+    display: block;
+    position: relative;
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
+    flex-direction: row;
+}
+
+#main {
     text-align: center;
     padding: 70px;
     background-color: greenyellow;
@@ -22,6 +35,53 @@ main {
     box-shadow: 10px 10px 0px rgb(96, 94, 94);
 }
 
+#dashboard-main {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    margin: 0;
+    z-index: 10;
+    text-align: center;
+    padding: 20px;
+    background-color: greenyellow;
+    border-radius: 60% 40% 30% 70% / 40% 30% 70% 60%;
+    box-shadow: 10px 10px 0px rgb(96, 94, 94);
+    
+}
+
+.workspace {
+    display: flex;
+    padding: 120px;/* this pushes the buttons down so that the logo doesnt cover it*/
+    width: 100%;
+}
+
+aside {
+    width: 79px;
+    flex-shrink: 0;
+}
+
+.margin-nav {
+    display: flex;
+    flex-direction: column;
+    width: 79px;
+}
+
+.nav-btn {
+    width: 79px;  /* force button to stay inside the 79px margin*/
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 60px; /*this makes that 2-line gap*/
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    padding: 0; /*this removes the default padding*/
+}
+
+main {
+    padding-left: 5px; /*this pushes the main content to the right*/
+    flex-grow: 1;
+}
 
 .app-logo {
     margin-top: -10px;
@@ -127,4 +187,16 @@ main p:hover {
     border-radius: 10px;
     box-shadow: 15px 15px 0px rgba(0, 0, 0, 0.2);
     z-index: 1000;
+}
+
+#notes{
+    display: none;
+}
+
+#tasks{
+    display: none;
+}
+
+#settings{
+    display: none;
 }

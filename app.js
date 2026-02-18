@@ -8,6 +8,8 @@ const landingPage = document.getElementById('landing-page');
 const modalOverlay = document.getElementById('modal-overlay');
 const verificationPage = document.getElementById('verification-form');
 const registrationSubmitBtn = document.getElementById('registration-submit-btn');
+const verifyBtn = document.getElementById('verify-btn');
+const loginSubmitBtn = document.getElementById('login-submit-btn');
 
 
 
@@ -39,4 +41,16 @@ registrationSubmitBtn.addEventListener('click', e =>{
     registrationForm.style.display = 'none';
     verificationPage.style.display = 'block';
     modalOverlay.style.display = 'block';
+})
+
+loginSubmitBtn.addEventListener('click', e => {
+    e.preventDefault();
+    loginForm.style.display = 'none';
+    verificationPage.style.display = 'block';
+    modalOverlay.style.display = 'block';
+})
+verifyBtn.addEventListener('click',() => {
+    //this is where we will introduce the logic for verifying the user's email
+    windows.location.href = 'pages/dashboard.html';//if the code is correct we will redirect the user to the dashboard
+    //if the code is incorrect we will display an error message
 })
