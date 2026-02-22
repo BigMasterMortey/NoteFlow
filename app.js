@@ -10,6 +10,8 @@ const verificationPage = document.getElementById('verification-form');
 const registrationSubmitBtn = document.getElementById('registration-submit-btn');
 const verifyBtn = document.getElementById('verify-btn');
 const loginSubmitBtn = document.getElementById('login-submit-btn');
+const navButtons = document.getElementById('.nav-btn')
+const sections = document.getElementById(' main section')
 
 
 
@@ -41,16 +43,47 @@ registrationSubmitBtn.addEventListener('click', e =>{
     registrationForm.style.display = 'none';
     verificationPage.style.display = 'block';
     modalOverlay.style.display = 'block';
-})
+});
 
 loginSubmitBtn.addEventListener('click', e => {
     e.preventDefault();
     loginForm.style.display = 'none';
     verificationPage.style.display = 'block';
     modalOverlay.style.display = 'block';
-})
+});
+
 verifyBtn.addEventListener('click',() => {
     //this is where we will introduce the logic for verifying the user's email
     windows.location.href = 'pages/dashboard.html';//if the code is correct we will redirect the user to the dashboard
     //if the code is incorrect we will display an error message
-})
+});
+
+//this is the intialisation logic for the dashboard//
+
+//defines what happens as soon as the window finishes loading
+window.onload = () => {
+    document.getElementById('notes').style.display = 'block';// shpws the 'notes' section immediately so the page isn't blank on the start
+    handleNavigation();//starts the function that listens for user clicks 
+};
+
+//this is the function that handles the navigation between the different sections of the dashboard
+function handleNavigation() {
+    navButtons.forEach(button => { // wait for a click on any of the buttons
+        button.addEventListener('click', () => { // "when a button is clicked"
+            const target = button.getAttribute('data-target'); // this gets the value of the target attribute from the clicked button
+            if (target === 'logout') { // if the target is meant for logging out the user
+                window.location.href = 'index.html';  // send the user back to the main landing page
+                return; //Exit the function so we dont try to hide/show any sections
+            }
+            //this is the logic for switching between sections
+            sections.forEach(section => {
+                section.style.display = 'none'; // this hides every section            })
+            document.getElementById(target).style.display = 'block'; // this shows the target section
+            });
+            const activeSection = document.getElementById(target); //this gets the target section/ locates the one section that matches the ID of the clicked button
+            if (activeSection) {
+                activeSection.style.display = 'block'; // this shows the target section and the display the notebook lines
+            }
+        });
+    });
+}

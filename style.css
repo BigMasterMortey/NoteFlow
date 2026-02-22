@@ -14,7 +14,6 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    text-transform: capitalize
 }
 /*This code is for the dashboard body*/
 #dashboard-view {
@@ -29,10 +28,13 @@
 
 #main {
     text-align: center;
-    padding: 70px;
+    padding: 40px;
     background-color: greenyellow;
     border-radius: 60% 40% 30% 70% / 40% 30% 70% 60%;
     box-shadow: 10px 10px 0px rgb(96, 94, 94);
+    width: fit-content;
+    max-width: 500px;
+    margin: auto;
 }
 
 #dashboard-main {
@@ -51,13 +53,15 @@
 
 .workspace {
     display: flex;
-    padding: 120px;/* this pushes the buttons down so that the logo doesnt cover it*/
+    padding: 120px 0 0 0;
+    /* 120px top padding = 4 lines of 30px, this clears the space for the logo */
+    /* 0px left padding keeps the margin (aside) flush against the screen edge */
     width: 100%;
 }
 
 aside {
-    width: 79px;
-    flex-shrink: 0;
+    width: 79px;/*Exact width before the redline inside teh background image / width of the margin */
+    flex-shrink: 0;/* prevents the main content from squeezing the margin width */
 }
 
 .margin-nav {
@@ -67,19 +71,19 @@ aside {
 }
 
 .nav-btn {
-    width: 79px;  /* force button to stay inside the 79px margin*/
+    width: 79px;  /* force button to stay inside the 79px margin matching the aside width exactly*/
     height: 30px;
     line-height: 30px;
-    margin-bottom: 60px; /*this makes that 2-line gap*/
+    margin-bottom: 30px; /*this makes that 2-line gap* - or a 1 line page it goes in 30's so utitlise it if you want*/
     background: none;
     border: none;
     cursor: pointer;
-    text-align: center;
-    padding: 0; /*this removes the default padding*/
+    text-align: center; 
+    padding-right: 10px;/* this provides a small gao so the text doesn't hit the red line directly*/
 }
 
 main {
-    padding-left: 5px; /*this pushes the main content to the right*/
+    padding-left: 10px; /* balanced gap on the other side of the red line*/
     flex-grow: 1;
 }
 
