@@ -211,3 +211,58 @@ main p:hover {
 #settings{
     display: none;
 }
+
+/* this is for the floating action button (the pen)*/
+#fab-pen {
+    position: fixed; /* this makes the button stay in the same place even when the page is scrolled*/
+    bottom: 30px; /* 1 notebook line up from the bottom*/
+    right: 30px; /* pushed in from the right edge*/
+    width: 60px; /* circular button width (2 lines tall)*/
+    height: 60px; /* circular button height*/
+    background-color: var(--accent-color); /* uses the color of the accent/ the highlighter color*/
+    border-radius: 50%; /* makes the button circular/ makes the button a perfect circle*/
+    border: 2px solid #333; /* thin ink border for definition*/
+    cursor: pointer; /* changes the cursor to a pointer when hovering over the button*/
+    font-size: 24px; /* the size of the icon*/
+    display: flex; /* enables flexbox*/
+    align-items: center; /* centers the icon vertically*/
+    justify-content: center; /* centers the icon horizontally*/
+    box-shadow: 4px 4px 0px #333; /* the shadow of the button*/
+}
+
+/* Editor Styling*/
+
+/*this is for the back button in the editor at teh top left*/
+.back-sign {
+    background: none; /* removes default button background*/
+    border: none; /* removes deafualt button border*/
+    cursor: pointer; /* shows the pointer hand*/
+    font-weight: bold; /* makes it stand out */
+    padding: 10px 0;
+}
+
+/* the Title Input */
+.line-locked-title {
+    width: 100px;
+    height: 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    background: transparent;
+    outline: none;
+    margin-top: 30px;
+    color: var(--ink-color);
+}
+
+/*the content input/Textarea */
+.line-locked-content {
+    width: 100%;
+    height: 600px;
+    line-height: 30px;
+    border: none;
+    background: transparent;
+    outline: none;
+    resize: none;
+    color: var(--ink-color);
+    padding: 0;
+}
