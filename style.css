@@ -1,3 +1,10 @@
+:root {
+    --line-height: 30px; /* the height of one notebook line*/
+    --margin-width: 79px; /* the width of the left margin area*/
+    --ink-color: #333333; /* the color of the ink/ the standard pen color*/
+    --accent-color: #adff2f; /* the color of the accent/ the highlighter color*/
+}
+
 .notebook-skin {
     background-color: ivory;
     background-image: linear-gradient(90deg, transparent 79px, red 79px, red 81px, transparent 81px), 
@@ -60,7 +67,7 @@
 }
 
 aside {
-    width: 79px;/*Exact width before the redline inside teh background image / width of the margin */
+    width: var(--margin-width);/*Exact width before the redline inside teh background image / width of the margin */
     flex-shrink: 0;/* prevents the main content from squeezing the margin width */
 }
 

@@ -3,16 +3,15 @@ const loginBtn = document.getElementById('login-btn');
 const registrationBtn = document.getElementById('register-btn');
 const loginForm = document.getElementById('login-form');
 const registrationForm = document.getElementById('register-form');
-const backButtons = document.querySelectorAll('back-btn');
+const backButtons = document.querySelectorAll('.back-btn');
 const landingPage = document.getElementById('landing-page');
 const modalOverlay = document.getElementById('modal-overlay');
 const verificationPage = document.getElementById('verification-form');
 const registrationSubmitBtn = document.getElementById('registration-submit-btn');
 const verifyBtn = document.getElementById('verify-btn');
 const loginSubmitBtn = document.getElementById('login-submit-btn');
-const navButtons = document.getElementById('.nav-btn')
-const sections = document.getElementById(' main section')
-
+const navButtons = document.querySelectorAll('.nav-btn')
+const sections = document.querySelectorAll('main section')
 
 
 
@@ -54,7 +53,7 @@ loginSubmitBtn.addEventListener('click', e => {
 
 verifyBtn.addEventListener('click',() => {
     //this is where we will introduce the logic for verifying the user's email
-    windows.location.href = 'pages/dashboard.html';//if the code is correct we will redirect the user to the dashboard
+    window.location.href = 'pages/dashboard.html';//if the code is correct we will redirect the user to the dashboard
     //if the code is incorrect we will display an error message
 });
 
@@ -76,8 +75,10 @@ function handleNavigation() {
                 return; //Exit the function so we dont try to hide/show any sections
             }
             //this is the logic for switching between sections
+            //1. Hide all sections
             sections.forEach(section => {
                 section.style.display = 'none'; // this hides every section            })
+            //2. Show the target section
             document.getElementById(target).style.display = 'block'; // this shows the target section
             });
             const activeSection = document.getElementById(target); //this gets the target section/ locates the one section that matches the ID of the clicked button
