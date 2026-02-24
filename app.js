@@ -12,6 +12,11 @@ const verifyBtn = document.getElementById('verify-btn');
 const loginSubmitBtn = document.getElementById('login-submit-btn');
 const navButtons = document.querySelectorAll('.nav-btn')
 const sections = document.querySelectorAll('main section')
+const listView = document.getElementById('notes-list-view')
+const editView = document.getElementById('notes-editor-view')
+const titleInput = document.getElementById('note-title-input')
+const contentInput = document.getElementById('note-content-input')
+ let notes = [];
 
 
 
@@ -61,9 +66,13 @@ verifyBtn.addEventListener('click',() => {
 
 //defines what happens as soon as the window finishes loading
 window.onload = () => {
-    document.getElementById('notes').style.display = 'block';// shpws the 'notes' section immediately so the page isn't blank on the start
-    handleNavigation();//starts the function that listens for user clicks 
+    const notesSection = document.getElementById('notes');
+    if (notesSection) {
+        notesSection.style.display = 'block';
+        handleNavigation(); //starts the function that listens for user clicks
+    }
 };
+
 
 //this is the function that handles the navigation between the different sections of the dashboard
 function handleNavigation() {
@@ -86,5 +95,80 @@ function handleNavigation() {
                 activeSection.style.display = 'block'; // this shows the target section and the display the notebook lines
             }
         });
+    });
+}
+
+//STATE MANAGEMENT FOR NOTES
+let currentNoteIndex = null; //this will track/store which note is currently being edited(null means its a new note)
+
+//VIEW TOOLING
+const openEditor = (index = null) => {
+    currentNoteIndex = index; //set the index to the note we want to edit or null if its a new note
+    
+    if (index !== null) {
+        //if editing existing: fill inputs with saved data
+        titleInput.value = notes[index].title;
+        contentInput.value = notes[index].content;
+    } else {
+        //if new note: clear the inputs
+        titleInput.value = '';
+        contentInput.value = '';
+    }
+
+    listView.style.display = 'none'; //hide the list view
+    editView.style.display = 'block'; //show the editor view
+};
+
+//Function to go back to the list view 
+const closedEditor = () => {
+    editView.style.display = 'none'; //hide the editor view 
+    listView.style.display = 'block'; //show the list view
+    renderNotes(); //refresh the list to show the new/updated note
+};
+
+//EVENT LISTENERS
+
+//when the pen icon is clicked: open the editor for a new note
+document.getElementById('fab-pen').addEventListener('click', () => {
+    openEditor();
+});
+
+//When the back arrow is clicked: close the editor and return to the list view
+document.getElementById('editor-back-btn').addEventListener('click', () => {
+    closedEditor();
+});
+
+//when the save button is clicked: save the note and return to the list view
+document.getElementById('editor-save-btn').addEventListener('click', () => {
+    const newNote = {
+        title: titleInput.value, //gets the value of the title input
+        content: contentInput.value //gets the value of the content input
+    };   
+    
+    if (currentNoteIndex !== null) {
+        //update existing note
+        notes[currentNoteIndex] = newNote;
+    } else {
+        //add new note
+        notes.push(newNote);
+    }
+    //save to local storage
+    saveToLocalStorage(); //Saves the note to the local storage
+    closedEditor(); //Closes the editor and returns to the list view
+})
+
+// This saves the data to the browser
+function saveToLocalStorage() {
+    localStorage.setItem('notes', JSON.stringify(notes));
+}
+
+// This draws the notes on the screen
+function renderNotes() {
+    const notesList = document.getElementById('notes-list');
+    notesList.innerHTML = ''; // clear the list first
+    
+    notes.forEach((note, index) => {
+        // Here is where you would build the HTML for each note item
+        // and add it to notesList
     });
 }

@@ -228,6 +228,7 @@ main p:hover {
     align-items: center; /* centers the icon vertically*/
     justify-content: center; /* centers the icon horizontally*/
     box-shadow: 4px 4px 0px #333; /* the shadow of the button*/
+    z-index: 9999;
 }
 
 /* Editor Styling*/
@@ -239,6 +240,21 @@ main p:hover {
     cursor: pointer; /* shows the pointer hand*/
     font-weight: bold; /* makes it stand out */
     padding: 10px 0;
+}
+
+.save-tick-btn {
+    background: none; /* removes default button background*/
+    border: none; /* removes deafualt button border*/
+    font-size: 2rem; /* the size of the icon*/
+    color: var(--ink-color); /* the color of the icon*/
+    cursor: pointer; /* shows the pointer hand*/
+    font-weight: bold; /* makes it stand out */
+    padding: 0 15px; /* adds space on the left and right of the icon so its easy to tap*/
+    transition: transform 0.2s ease; /* adds a smooth transition effect when the button is clicked*/
+}
+
+.save-tick-btn:active {
+    transform: scale(0.95); /* makes the button slightly smaller when clicked*/
 }
 
 /* the Title Input */

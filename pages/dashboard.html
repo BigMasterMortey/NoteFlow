@@ -9,41 +9,42 @@
 <body id="dashboard-view" class="notebook-skin">
     <h4 id="dashboard-main">Dashboard | NoteFlow</h4>
     <div class="workspace">
-        <aside>
-            <nav class="margin-nav">
-                <button class="nav-btn" data-target="notes">Notes</button>
-                <button class="nav-btn" data-target="tasks">Tasks</button>
-                <button class="nav-btn" data-target="settings">Settings</button>
-                <button class="nav-btn" data-target="logout">Logout</button>
-            </nav>
-        </aside>
+            <aside>
+                <nav class="margin-nav">
+                    <button class="nav-btn" data-target="notes">Notes</button>
+                    <button class="nav-btn" data-target="tasks">Tasks</button>
+                    <button class="nav-btn" data-target="settings">Settings</button>
+                    <button class="nav-btn" data-target="logout">Logout</button>
+                </nav>
+            </aside>
+        
+        <main>
+            <section id="notes">
+            <div id="notes-list-view">
+                    <h2>Notes</h2>
+                    <div id="notes-list"><p>Your saved notes will appear here</p></div>
+                    <button id="fab-pen" aria-label="add note">✎</button>
+            </div>
+            <div id="notes-editor-view" style="display: none;">
+                    <div id="editor-nav">
+                    <button id="editor-back-btn" class="back-sign" aria-label="back to notes list">←</button>
+                    <button id="editor-save-btn" class="save-tick-btn" aria-label="save note">✓</button>  
+                    </div>
+                    <input type="text" id="note-title-input" placeholder="Note Title(optional)" class="line-locked-title">
+                    <textarea id="note-content-input" placeholder="Start writing..." class="line-locked-content"></textarea>
+            </div>
+            </section>
+            <section id="tasks">
+                <h2>Tasks</h2>
+                <button class="add-btn">Add Task</button>
+                <p>Manage your daily tasks here</p>
+            </section>
+            <section id="settings">
+                <h2>Settings</h2>
+                <button class="add-btn">Add Setting</button>
+            </section>
+        </main>
     </div>
-    <main>
-        <section id="notes">
-           <div id="notes-list-view">
-                <h2>Notes</h2>
-                <div id="notes-list"><p>Your saved notes will appear here</p></div>
-                <button id="fab-pen" aria-label="add note">✎</button>
-           </div>
-           <div id="notes-editor-view" style="display: none;">
-                <div id="editor-nav">
-                  <button id="editor-back-btn" class="back-sign" aria-label="back to notes list">←</button>
-                  <button id="editor-save-btn" aria-label="save note">✓</button>  
-                </div>
-                <input type="text" id="note-title-input" placeholder="Note Title(optional)" class="line-locked-title">
-                <textarea id="note-content-input" placeholder="Start writing..." class="line-locked-content"></textarea>
-           </div>
-        </section>
-        <section id="tasks">
-            <h2>Tasks</h2>
-            <button class="add-btn">Add Task</button>
-            <p>Manage your daily tasks here</p>
-        </section>
-        <section id="settings">
-            <h2>Settings</h2>
-            <button class="add-btn">Add Setting</button>
-        </section>
-    </main>
 <script src="../app.js"></script>
 </body>
 </html>
