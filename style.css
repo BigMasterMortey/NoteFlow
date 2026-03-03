@@ -180,38 +180,37 @@ main p:hover {
     display: flex;
     padding: 120px 0 0 0; /* Space for the logo at the top */
     width: 100%;
-}
-
-.focus-mode .workspace {
-    padding-top: 0; /* EDITED: Remove top spacing in Focus Mode so editor starts from very top */
+    align-items: flex-start; /* EDITED: Align items to the top */
 }
 
 aside {
-    width: var(--margin-width);
+    width: var(--margin-width); /*Strictly 79px*/
     flex-shrink: 0;
 }
 
 .margin-nav {
     display: flex; /* keeps buttons in a column*/
     flex-direction: column; /* Vertical stack 8*/
-    width: var(--margin-width); /*Matches the 79px margin*/
+    width: 100%; /*Fills the 79px margin perfectly*/
     padding-top: 0px; /* EDITED: Shift buttons so text baseline sits ON the line//removed the 8px that was pushing the buttons off the lines */
 }
-
 .nav-btn {
-    width: var(--margin-width);/*spans the margin width*/
-    height: 30px;/* matches the line height*/
-    line-height: 30px;/* centers the text vertically inside the 30px*/
-    margin-bottom: 30px; /* skips exactly one line between the buttons*/
+    width: 100%; /*stays strictly 79px*/
+    height: 30px;
+    margin-bottom: 30px;/* skips exactly one line space*/
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     background: none;
     border: none;
     cursor: pointer;
-    text-align: center; 
-    padding: 0px; /* ensure no extra space is added */
     font-family: inherit;
     font-size: 1rem;
+    padding: 0;
+    color: var(--ink-color);
 }
-
 main {
     padding-left: 20px; /* same as margin width to align with the margin */
     padding-top: 8px; /* EDITED: Shift content so text baseline sits ON the line */
@@ -306,6 +305,8 @@ main {
     height: 30px; /** matches the line height/locked to the 30px grid*/
     text-transform: uppercase; 
     margin-bottom: 30px; /*puts exactly one empty line after the title/header*/
+    display: flex;
+    align-items: center;
 }
 
 .note-item {
@@ -314,6 +315,8 @@ main {
     font-weight: 500;
     line-height: 30px;
     height: 30px; 
+    display: flex;
+    align-items: center;
 }
 
 .note-item h3 {
