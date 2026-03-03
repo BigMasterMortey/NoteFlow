@@ -16,6 +16,8 @@ const listView = document.getElementById('notes-list-view')
 const editView = document.getElementById('notes-editor-view')
 const titleInput = document.getElementById('note-title-input')
 const contentInput = document.getElementById('note-content-input')
+const saveTick = document.getElementById('editor-save-btn'); // EDITED
+const backBtn = document.getElementById('editor-back-btn'); // EDITED
  let notes = [];
 
 
@@ -95,22 +97,27 @@ window.onload = () => {
 
 
 //this is the function that handles the navigation between the different sections of the dashboard
-function handleNavigation() {
-    navButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const target = button.getAttribute('data-target');
+function handleNavigation() { // EDITED
+    navButtons.forEach(button => { // Loop through all sidebar buttons /EDITED
+        button.addEventListener('click', () => { // when one is clicked ... /EDITED
+            // 1. clear all active states /EDITED
+            navButtons.forEach(btn => btn.classList.remove('active')); // EDITED
+            // 2. add active state to clicked button /EDITED
+            button.classList.add('active'); // EDITED
+            
+            const target = button.getAttribute('data-target'); // get the target section id /EDITED
             
             if (target === 'logout') {
                 window.location.href = 'index.html';
                 return;
             }
 
-            // 1. Hide all sections
+            // 3. Hide all sections /EDITED
             sections.forEach(section => {
                 section.style.display = 'none';
             });
 
-            // 2. Show the target section
+            // 4. Show the target section /EDITED
             const activeSection = document.getElementById(target);
             if (activeSection) {
                 activeSection.style.display = 'block';
@@ -124,8 +131,12 @@ function handleNavigation() {
 let currentNoteIndex = null; //this will track/store which note is currently being edited(null means its a new note)
 
 //VIEW TOOLING
-const openEditor = (index = null) => {
-    currentNoteIndex = index; //set the index to the note we want to edit or null if its a new note
+/* --- THE FOCUS MODE LOGIC (FOR WRITING) --- */ // EDITED
+const openEditor = (index = null) => { // EDITED
+    // add the focus-mode class to the body /EDITED
+    document.body.classList.add('focus-mode'); // EDITED
+
+    currentNoteIndex = index; // Store if we are editing an old note or new /EDITED
     
     if (index !== null) {
         //if editing existing: fill inputs with saved data
@@ -141,8 +152,11 @@ const openEditor = (index = null) => {
     editView.style.display = 'block'; //show the editor view
 };
 
-//Function to go back to the list view 
-const closedEditor = () => {
+//Function to close the writing page and return to the list view /EDITED
+const closedEditor = () => { // EDITED
+    // bring the sidebar and Logo back /EDITED
+    document.body.classList.remove('focus-mode'); // EDITED
+
     editView.style.display = 'none'; //hide the editor view 
     listView.style.display = 'block'; //show the list view
     renderNotes(); //refresh the list to show the new/updated note
@@ -151,33 +165,40 @@ const closedEditor = () => {
 //EVENT LISTENERS
 
 //when the pen icon is clicked: open the editor for a new note
-document.getElementById('fab-pen').addEventListener('click', () => {
-    openEditor();
-});
+const fabPen = document.getElementById('fab-pen'); // EDITED
+if (fabPen) { // EDITED
+    fabPen.addEventListener('click', () => {
+        openEditor();
+    });
+}
 
 //When the back arrow is clicked: close the editor and return to the list view
-document.getElementById('editor-back-btn').addEventListener('click', () => {
-    closedEditor();
-});
+if (backBtn) { // EDITED
+    backBtn.addEventListener('click', () => {
+        closedEditor();
+    });
+}
 
 //when the save button is clicked: save the note and return to the list view
-document.getElementById('editor-save-btn').addEventListener('click', () => {
-    const newNote = {
-        title: titleInput.value, //gets the value of the title input
-        content: contentInput.value //gets the value of the content input
-    };   
-    
-    if (currentNoteIndex !== null) {
-        //update existing note
-        notes[currentNoteIndex] = newNote;
-    } else {
-        //add new note
-        notes.push(newNote);
-    }
-    //save to local storage
-    saveToLocalStorage(); //Saves the note to the local storage
-    closedEditor(); //Closes the editor and returns to the list view
-})
+if (saveTick) { // EDITED
+    saveTick.addEventListener('click', () => {
+        const newNote = {
+            title: titleInput.value, //gets the value of the title input
+            content: contentInput.value //gets the value of the content input
+        };   
+        
+        if (currentNoteIndex !== null) {
+            //update existing note
+            notes[currentNoteIndex] = newNote; // EDITED
+        } else {
+            //add new note to the top /EDITED
+            notes.unshift(newNote); // EDITED
+        }
+        //save to local storage
+        saveToLocalStorage(); //Saves the note to the local storage
+        closedEditor(); //Closes the editor and returns to the list view
+    });
+}
 
 // This saves the data to the browser
 function saveToLocalStorage() {

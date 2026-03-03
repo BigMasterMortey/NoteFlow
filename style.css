@@ -1,3 +1,7 @@
+/* ==========================================================================
+   GENERAL / PARENT STYLES
+   ========================================================================== */
+
 :root {
     --line-height: 30px; /* the height of one notebook line*/
     --margin-width: 79px; /* the width of the left margin area*/
@@ -14,6 +18,22 @@
     height: 100vh;
 }
 
+/*this section is for the Modal/ the Dimmer switch */
+#modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 500;
+}
+
+/* ==========================================================================
+   INDEX.HTML (LANDING PAGE) STYLES
+   ========================================================================== */
+
 #landing-view {
     margin: 0;
     padding: 0;
@@ -21,16 +41,6 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-}
-/*This code is for the dashboard body*/
-#dashboard-view {
-    padding: 0;/*we will get back to it later */
-    display: block;
-    position: relative;
-    justify-content: flex-start;
-    align-items: flex-start;
-    text-align: left;
-    flex-direction: row;
 }
 
 #main {
@@ -42,56 +52,6 @@
     width: fit-content;
     max-width: 500px;
     margin: auto;
-}
-
-#dashboard-main {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    margin: 0;
-    z-index: 10;
-    text-align: center;
-    padding: 20px;
-    background-color: greenyellow;
-    border-radius: 60% 40% 30% 70% / 40% 30% 70% 60%;
-    box-shadow: 10px 10px 0px rgb(96, 94, 94);
-    
-}
-
-.workspace {
-    display: flex;
-    padding: 120px 0 0 0;
-    /* 120px top padding = 4 lines of 30px, this clears the space for the logo */
-    /* 0px left padding keeps the margin (aside) flush against the screen edge */
-    width: 100%;
-}
-
-aside {
-    width: var(--margin-width);/*Exact width before the redline inside teh background image / width of the margin */
-    flex-shrink: 0;/* prevents the main content from squeezing the margin width */
-}
-
-.margin-nav {
-    display: flex;
-    flex-direction: column;
-    width: 79px;
-}
-
-.nav-btn {
-    width: 79px;  /* force button to stay inside the 79px margin matching the aside width exactly*/
-    height: 30px;
-    line-height: 30px;
-    margin-bottom: 30px; /*this makes that 2-line gap* - or a 1 line page it goes in 30's so utitlise it if you want*/
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-align: center; 
-    padding-right: 10px;/* this provides a small gao so the text doesn't hit the red line directly*/
-}
-
-main {
-    padding-left: 10px; /* balanced gap on the other side of the red line*/
-    flex-grow: 1;
 }
 
 .app-logo {
@@ -174,18 +134,6 @@ main p:hover {
     z-index: 1000;
 }
 
-/*this section is for the Modal/ the Dimmer switch */
-#modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    z-index: 500;
-}
-
 #verification-form {
     display: none;
     position: fixed;
@@ -198,6 +146,71 @@ main p:hover {
     border-radius: 10px;
     box-shadow: 15px 15px 0px rgba(0, 0, 0, 0.2);
     z-index: 1000;
+}
+
+/* ==========================================================================
+   DASHBOARD.HTML STYLES
+   ========================================================================== */
+
+/*This code is for the dashboard body*/
+#dashboard-view {
+    padding: 0;/*we will get back to it later */
+    display: block;
+    position: relative;
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
+    flex-direction: row;
+}
+
+#dashboard-main {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    margin: 0;
+    z-index: 10;
+    text-align: center;
+    padding: 20px;
+    background-color: greenyellow;
+    border-radius: 60% 40% 30% 70% / 40% 30% 70% 60%;
+    box-shadow: 10px 10px 0px rgb(96, 94, 94);
+    
+}
+
+.workspace {
+    display: flex;
+    padding: 120px 0 0 0;
+    /* 120px top padding = 4 lines of 30px, this clears the space for the logo */
+    /* 0px left padding keeps the margin (aside) flush against the screen edge */
+    width: 100%;
+}
+
+aside {
+    width: var(--margin-width);/*Exact width before the redline inside teh background image / width of the margin */
+    flex-shrink: 0;/* prevents the main content from squeezing the margin width */
+}
+
+.margin-nav {
+    display: flex;
+    flex-direction: column;
+    width: 79px;
+}
+
+.nav-btn {
+    width: 79px;  /* force button to stay inside the 79px margin matching the aside width exactly*/
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 30px; /*this makes that 2-line gap* - or a 1 line page it goes in 30's so utitlise it if you want*/
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: center; 
+    padding-right: 10px;/* this provides a small gao so the text doesn't hit the red line directly*/
+}
+
+main {
+    padding-left: 10px; /* balanced gap on the other side of the red line*/
+    flex-grow: 1;
 }
 
 #notes{
@@ -281,4 +294,50 @@ main p:hover {
     resize: none;
     color: var(--ink-color);
     padding: 0;
+}
+
+#notes h2 {
+    margin: 0; /*removes the default browser gap at the top of the h2 element*/
+    padding: 0 0 30px 0; /* Adds exactly one notebook line of space below the "NOTES" heading*/
+    font-size: 24px; /*Clean, modern font size that's easy to read*/
+    line-height: 30px; /*Matches the line-height of the rest of the text for consistency*/
+    text-transform: uppercase; /*Makes the heading all caps for a clean look making it look like a formal notebook heading*/
+}
+
+.note-item {
+    margin-bottom: 30px; /* Adds exactly one notebook line of space between each note item matching the nav bar navigation*/
+    cursor: pointer; /* Changes the cursor to a pointer when hovering over the note item for better user experience*/
+    font-weight: 500;/*Makes the note item text bold for emphasis*/
+    line-height: 30px; /*Matches the line-height of the rest of the text for consistency*/
+}
+
+/* --- THE FOXUS MODE (TEARING DOWN THE SIDEBAR)--- */
+/* This class will be toggled by javascript when the user clicks the pen/Fab pen*/
+.focus-mode aside,
+#dashboard-main { /* EDITED: Changed from .logo-container to target the correct ID */
+    display: none; /* this completely removes the sidebar and logo from view*/
+}
+
+/* Ensure the logo is hidden only in focus mode */
+.focus-mode #dashboard-main {
+    display: none;
+}
+
+/*this emsure that the paper stays put and doesn't mess up when the sidebar vanishes*/
+.focus-mode main{
+    margin-left: 0;  /*Keeps the writing area aligned with the margin*/
+}
+
+/* --- THE EDITOR NAVIGATION (BACK & SAVE BUTTONS) --- */
+#editor-nav {
+    display: flex;  /* uses flexbox to align button on one line */
+    justify-content: space-between; /* pushes the back button to the left and the save button to the right*/
+    width: 100%; /* soans the entire width of the notebook paper*/
+    margin-bottom: 30px; /* Adds exactly one notebook line of space below the editor navigation*/
+}
+
+/*THE ACTIVE BUTTON HIGHLIGHT*/
+.nav-btn.active {
+    font-weight: 900; /* Makes the current page button much bolder than the others*/
+    text-decoration: underline; /* Underlines the active button to show the user which page they are on NOTE: this is absolutely optional*/
 }
