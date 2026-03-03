@@ -12,7 +12,7 @@
 .notebook-skin {
     background-color: ivory;
     background-image: linear-gradient(90deg, transparent 79px, red 79px, red 81px, transparent 81px), 
-                      linear-gradient(#130e0e 1px, transparent 1px);
+                      linear-gradient(transparent 29px, #130e0e 29px); /* EDITED: Moved line to the bottom of each 30px row */
     background-size: 100% 30px;
     font-family: 'Times New Roman', Times, serif;
     height: 100vh;
@@ -154,17 +154,14 @@ main p:hover {
 
 /*This code is for the dashboard body*/
 #dashboard-view {
-    padding: 0;/*we will get back to it later */
+    padding: 0;
     display: block;
     position: relative;
-    justify-content: flex-start;
-    align-items: flex-start;
     text-align: left;
-    flex-direction: row;
 }
 
 #dashboard-main {
-    position: absolute;
+    position: absolute; /* EDITED: Reverted to absolute positioning */
     top: 10px;
     left: 10px;
     margin: 0;
@@ -172,121 +169,126 @@ main p:hover {
     text-align: center;
     padding: 20px;
     background-color: greenyellow;
-    border-radius: 60% 40% 30% 70% / 40% 30% 70% 60%;
+    border-radius: 60% 40% 30% 70% / 40% 30% 70% 60%; /* EDITED: Reverted to blob shape */
     box-shadow: 10px 10px 0px rgb(96, 94, 94);
-    
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .workspace {
     display: flex;
-    padding: 120px 0 0 0;
-    /* 120px top padding = 4 lines of 30px, this clears the space for the logo */
-    /* 0px left padding keeps the margin (aside) flush against the screen edge */
+    padding: 120px 0 0 0; /* Space for the logo at the top */
     width: 100%;
 }
 
+.focus-mode .workspace {
+    padding-top: 0; /* EDITED: Remove top spacing in Focus Mode so editor starts from very top */
+}
+
 aside {
-    width: var(--margin-width);/*Exact width before the redline inside teh background image / width of the margin */
-    flex-shrink: 0;/* prevents the main content from squeezing the margin width */
+    width: var(--margin-width);
+    flex-shrink: 0;
 }
 
 .margin-nav {
     display: flex;
     flex-direction: column;
-    width: 79px;
+    width: var(--margin-width);
+    padding-top: 8px; /* EDITED: Shift buttons so text baseline sits ON the line */
 }
 
 .nav-btn {
-    width: 79px;  /* force button to stay inside the 79px margin matching the aside width exactly*/
+    width: var(--margin-width);
     height: 30px;
     line-height: 30px;
-    margin-bottom: 30px; /*this makes that 2-line gap* - or a 1 line page it goes in 30's so utitlise it if you want*/
+    margin-bottom: 30px; 
     background: none;
     border: none;
     cursor: pointer;
     text-align: center; 
-    padding-right: 10px;/* this provides a small gao so the text doesn't hit the red line directly*/
+    padding-right: 10px;
+    font-family: inherit;
+    font-size: 1rem;
+    vertical-align: bottom; /* EDITED */
 }
 
 main {
-    padding-left: 10px; /* balanced gap on the other side of the red line*/
+    padding-left: 20px; 
+    padding-top: 8px; /* EDITED: Shift content so text baseline sits ON the line */
     flex-grow: 1;
 }
 
-#notes{
-    display: none;
-}
-
-#tasks{
-    display: none;
-}
-
-#settings{
+#notes, #tasks, #settings {
     display: none;
 }
 
 /* this is for the floating action button (the pen)*/
 #fab-pen {
-    position: fixed; /* this makes the button stay in the same place even when the page is scrolled*/
-    bottom: 30px; /* 1 notebook line up from the bottom*/
-    right: 30px; /* pushed in from the right edge*/
-    width: 60px; /* circular button width (2 lines tall)*/
-    height: 60px; /* circular button height*/
-    background-color: var(--accent-color); /* uses the color of the accent/ the highlighter color*/
-    border-radius: 50%; /* makes the button circular/ makes the button a perfect circle*/
-    border: 2px solid #333; /* thin ink border for definition*/
-    cursor: pointer; /* changes the cursor to a pointer when hovering over the button*/
-    font-size: 24px; /* the size of the icon*/
-    display: flex; /* enables flexbox*/
-    align-items: center; /* centers the icon vertically*/
-    justify-content: center; /* centers the icon horizontally*/
-    box-shadow: 4px 4px 0px #333; /* the shadow of the button*/
+    position: fixed; 
+    bottom: 30px; 
+    right: 30px; 
+    width: 60px; 
+    height: 60px; 
+    background-color: var(--accent-color); 
+    border-radius: 50%; 
+    border: 2px solid #333; 
+    cursor: pointer; 
+    font-size: 24px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    box-shadow: 4px 4px 0px #333; 
     z-index: 9999;
 }
 
 /* Editor Styling*/
 
-/*this is for the back button in the editor at teh top left*/
-.back-sign {
-    background: none; /* removes default button background*/
-    border: none; /* removes deafualt button border*/
-    cursor: pointer; /* shows the pointer hand*/
-    font-weight: bold; /* makes it stand out */
-    padding: 10px 0;
+/* EDITED: Updated buttons to be round and more visible */
+.back-sign, .save-tick-btn {
+    background-color: var(--accent-color); 
+    border: 2px solid #333; 
+    border-radius: 50%; 
+    width: 45px; 
+    height: 45px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    cursor: pointer; 
+    font-weight: bold;
+    box-shadow: 2px 2px 0px #333; 
+    transition: transform 0.1s ease;
+}
+
+.back-sign:active, .save-tick-btn:active {
+    transform: scale(0.9); 
+    box-shadow: none;
 }
 
 .save-tick-btn {
-    background: none; /* removes default button background*/
-    border: none; /* removes deafualt button border*/
-    font-size: 2rem; /* the size of the icon*/
-    color: var(--ink-color); /* the color of the icon*/
-    cursor: pointer; /* shows the pointer hand*/
-    font-weight: bold; /* makes it stand out */
-    padding: 0 15px; /* adds space on the left and right of the icon so its easy to tap*/
-    transition: transform 0.2s ease; /* adds a smooth transition effect when the button is clicked*/
-}
-
-.save-tick-btn:active {
-    transform: scale(0.95); /* makes the button slightly smaller when clicked*/
+    font-size: 1.5rem;
+    color: var(--ink-color);
 }
 
 /* the Title Input */
 .line-locked-title {
-    width: 100px;
+    width: 100%; 
     height: 30px;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     border: none;
     background: transparent;
     outline: none;
-    margin-top: 30px;
+    margin-top: 0px; 
     color: var(--ink-color);
+    padding: 0;
+    vertical-align: bottom; /* EDITED */
 }
 
 /*the content input/Textarea */
 .line-locked-content {
     width: 100%;
-    height: 600px;
+    height: calc(100vh - 120px); 
     line-height: 30px;
     border: none;
     background: transparent;
@@ -294,50 +296,69 @@ main {
     resize: none;
     color: var(--ink-color);
     padding: 0;
+    margin-top: 0px; 
 }
 
 #notes h2 {
-    margin: 0; /*removes the default browser gap at the top of the h2 element*/
-    padding: 0 0 30px 0; /* Adds exactly one notebook line of space below the "NOTES" heading*/
-    font-size: 24px; /*Clean, modern font size that's easy to read*/
-    line-height: 30px; /*Matches the line-height of the rest of the text for consistency*/
-    text-transform: uppercase; /*Makes the heading all caps for a clean look making it look like a formal notebook heading*/
+    margin: 0; 
+    padding: 0; 
+    font-size: 1.5rem; /* EDITED: Reduced size to fit better within the lines */
+    line-height: 30px; 
+    height: 30px; 
+    text-transform: uppercase; 
+    margin-bottom: 30px; 
+    vertical-align: bottom; /* EDITED */
 }
 
 .note-item {
-    margin-bottom: 30px; /* Adds exactly one notebook line of space between each note item matching the nav bar navigation*/
-    cursor: pointer; /* Changes the cursor to a pointer when hovering over the note item for better user experience*/
-    font-weight: 500;/*Makes the note item text bold for emphasis*/
-    line-height: 30px; /*Matches the line-height of the rest of the text for consistency*/
+    margin-bottom: 30px; 
+    cursor: pointer; 
+    font-weight: 500;
+    line-height: 30px;
+    height: 30px; 
 }
 
-/* --- THE FOXUS MODE (TEARING DOWN THE SIDEBAR)--- */
-/* This class will be toggled by javascript when the user clicks the pen/Fab pen*/
+.note-item h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    display: inline;
+    vertical-align: bottom; /* EDITED */
+}
+
+.note-item p {
+    margin: 0;
+    display: inline;
+    font-style: italic;
+    color: #666;
+    margin-left: 10px;
+    vertical-align: bottom; /* EDITED */
+}
+
+/* --- THE FOCUS MODE (TEARING DOWN THE SIDEBAR)--- */
+/* EDITED: Corrected selector to only hide logo in focus mode */
 .focus-mode aside,
-#dashboard-main { /* EDITED: Changed from .logo-container to target the correct ID */
-    display: none; /* this completely removes the sidebar and logo from view*/
-}
-
-/* Ensure the logo is hidden only in focus mode */
 .focus-mode #dashboard-main {
-    display: none;
+    display: none; 
 }
 
 /*this emsure that the paper stays put and doesn't mess up when the sidebar vanishes*/
-.focus-mode main{
-    margin-left: 0;  /*Keeps the writing area aligned with the margin*/
+.focus-mode main {
+    padding-left: calc(var(--margin-width) + 15px); 
+    padding-top: 8px; /* EDITED: Align focus content so text sits ON the line */
 }
 
 /* --- THE EDITOR NAVIGATION (BACK & SAVE BUTTONS) --- */
 #editor-nav {
-    display: flex;  /* uses flexbox to align button on one line */
-    justify-content: space-between; /* pushes the back button to the left and the save button to the right*/
-    width: 100%; /* soans the entire width of the notebook paper*/
-    margin-bottom: 30px; /* Adds exactly one notebook line of space below the editor navigation*/
+    display: flex;  
+    justify-content: space-between; 
+    width: 100%; 
+    height: 60px; 
+    align-items: center; 
+    margin-bottom: 0px; /* EDITED: Removed extra space before writing area */
 }
 
 /*THE ACTIVE BUTTON HIGHLIGHT*/
 .nav-btn.active {
-    font-weight: 900; /* Makes the current page button much bolder than the others*/
-    text-decoration: underline; /* Underlines the active button to show the user which page they are on NOTE: this is absolutely optional*/
+    font-weight: 900; 
+    text-decoration: underline; 
 }
