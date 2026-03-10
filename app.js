@@ -69,10 +69,14 @@ if (loginSubmitBtn) {
 }
 
 if (verifyBtn) {
-    verifyBtn.addEventListener('click',() => {
-        //this is where we will introduce the logic for verifying the user's email
-        window.location.href = 'pages/dashboard.html';//if the code is correct we will redirect the user to the dashboard
-        //if the code is incorrect we will display an error message
+    verifyBtn.addEventListener('click',(e) => { // EDITED
+        e.preventDefault(); // EDITED
+        const codeInput = document.getElementById('verify-code'); // EDITED
+        if (codeInput && codeInput.value === '1234') { // EDITED: Basic validation logic
+            window.location.href = 'pages/dashboard.html';
+        } else {
+            alert('Incorrect verification code! Hint: Try 1234'); // EDITED: Added feedback
+        }
     });
 }
 
@@ -208,6 +212,8 @@ function saveToLocalStorage() {
 // This draws the notes on the screen
 function renderNotes() {
     const notesList = document.getElementById('notes-list');
+    if (!notesList) return; // EDITED: Safety check
+
     notesList.innerHTML = ''; 
 
     if (notes.length === 0) {
@@ -219,10 +225,21 @@ function renderNotes() {
         const noteItem = document.createElement('div');
         noteItem.className = 'note-item';
         noteItem.innerHTML = `
-            <h3>${note.title || 'Untitled'}</h3>
-            <p>${note.content.substring(0, 30)}...</p>
+            <div class="note-content-wrapper" onclick="openEditor(${index})"> <!-- EDITED -->
+                <h3>${note.title || 'Untitled'}</h3>
+                <p>${note.content.substring(0, 30)}...</p>
+            </div>
+            <button class="delete-note-btn" onclick="deleteNote(${index})">×</button> <!-- EDITED: Added delete button -->
         `;
-        noteItem.onclick = () => openEditor(index); // This makes them clickable!
         notesList.appendChild(noteItem);
     });
+}
+
+// Function to delete a note /EDITED
+function deleteNote(index) {
+    if (confirm('Are you sure you want to delete this note?')) {
+        notes.splice(index, 1);
+        saveToLocalStorage();
+        renderNotes();
+    }
 }

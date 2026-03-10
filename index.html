@@ -20,8 +20,10 @@
        <div id="login-form">
         <h2>Login</h2>
         <form action="">
-            <input type="text" placeholder="Username">
-            <input type="password" placeholder="Password">
+            <label for="login-username" class="sr-only">Username</label> <!-- EDITED -->
+            <input type="text" id="login-username" placeholder="Username"> <!-- EDITED -->
+            <label for="login-password" class="sr-only">Password</label> <!-- EDITED -->
+            <input type="password" id="login-password" placeholder="Password"> <!-- EDITED -->
             <button id="login-submit-btn" type="submit">Login</button>
             <button class="back-btn">Back</button>
         </form>
@@ -29,16 +31,20 @@
        <div id="register-form">
         <h2>Register</h2>
         <form action="">
-            <input type="text" placeholder="Username">
-            <input type="email" placeholder="Email">
-            <input type="password" placeholder="Password">
+            <label for="register-username" class="sr-only">Username</label> <!-- EDITED -->
+            <input type="text" id="register-username" placeholder="Username"> <!-- EDITED -->
+            <label for="register-email" class="sr-only">Email</label> <!-- EDITED -->
+            <input type="email" id="register-email" placeholder="Email"> <!-- EDITED -->
+            <label for="register-password" class="sr-only">Password</label> <!-- EDITED -->
+            <input type="password" id="register-password" placeholder="Password"> <!-- EDITED -->
             <button id="registration-submit-btn" type="submit">Register</button>
             <button class="back-btn">Back</button>
         </form>
         </div>
         <form id="verification-form">
             <p><strong>Enter the code sent to your email</strong></p>
-            <input type="text" inputmode="numeric" placeholder="Enter Code">
+            <label for="verify-code" class="sr-only">Verification Code</label> <!-- EDITED -->
+            <input type="text" id="verify-code" inputmode="numeric" placeholder="Enter Code"> <!-- EDITED -->
             <button id="verify-btn" class="Vefify-btn" type="submit">Verify</button>
             <button class="back-btn">Back</button>
         </form>

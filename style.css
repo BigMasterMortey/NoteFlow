@@ -18,6 +18,19 @@
     height: 100vh;
 }
 
+/* EDITED: Screen reader only class for accessibility */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 /*this section is for the Modal/ the Dimmer switch */
 #modal-overlay {
     display: none;
@@ -106,46 +119,93 @@ main p:hover {
 }
 
 /*this section is for the login and register forms */
-#login-form {
+#login-form, #register-form, #verification-form {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /*this makes sure that the login form is centered on the screen*/
-    display: none;/*this makes sure that the login form does not display on the main unless the logic calls for it*/
-    background-color: white;
-    border: 4px solid black;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 15px 15px 0px rgba(0, 0, 0, 0.2);
+    top: 50%; /* EDITED: Reverted to center */
+    left: 50%; /* EDITED: Reverted to center */
+    transform: translate(-50%, -50%); /* EDITED: Reverted to center */
+    display: none;/*this makes sure that the form does not display unless the logic calls for it /EDITED */
+    background-color: ivory; /* EDITED: Matches notebook paper */
+    border: 4px solid #333; /* EDITED: Defined ink border */
+    padding: 40px; /* EDITED: More breathing room */
+    border-radius: 20px; /* EDITED: Softer, more modern look */
+    box-shadow: 20px 20px 0px rgba(0, 0, 0, 0.1); /* EDITED: Deeper, stylized shadow */
     z-index: 1000;
+    width: 320px; /* EDITED: Consistent width */
+    text-align: center; /* EDITED: Center title and buttons */
 }
 
-#register-form {
-    display: none;/*this makes sure that the registration form does not display on the main unless the logic calls for it*/
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /*this makes sure that the login form is centered on the screen*/
-    background-color: white;
-    border: 4px solid black;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 15px 15px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
+#login-form h2, #register-form h2, #verification-form h2 {
+    margin-top: 0;
+    font-size: 2rem;
+    color: #333;
+    font-style: oblique;
+    margin-bottom: 20px;
+    text-shadow: none; /* EDITED: Removed greenyellow shadow */
+    text-align: left; /* EDITED: Aligned header to the left */
 }
 
-#verification-form {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    border: 4px solid black;
-    padding: 30px;
+#login-form form, #register-form form, #verification-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* EDITED: Space between inputs */
+}
+
+#login-form input, #register-form input, #verification-form input {
+    padding: 12px;
+    border: 2px solid #333;
     border-radius: 10px;
-    box-shadow: 15px 15px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
+    background: transparent;
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--ink-color);
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+#login-form input:focus, #register-form input:focus, #verification-form input:focus {
+    border-color: var(--accent-color); /* EDITED: Highlight on focus */
+}
+
+#login-submit-btn, #registration-submit-btn, #verify-btn {
+    background-color: black;
+    color: white;
+    padding: 14px;
+    border: 2px solid #333;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    box-shadow: 0px 4px 0px #333;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+#login-submit-btn:active, #registration-submit-btn:active, #verify-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0px 2px 0px #333;
+}
+
+.back-btn {
+    background-color: var(--accent-color); /* EDITED: Round greenyellow style like the editor */
+    border: 2px solid #333; /* EDITED: Matching border style */
+    color: #333; /* EDITED: Dark ink color for the text */
+    padding: 8px 16px; /* EDITED: Better button sizing */
+    border-radius: 50px; /* EDITED: Round pill shape */
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: bold; /* EDITED: More emphasis */
+    margin-top: 15px; /* EDITED: Space from the submit button */
+    box-shadow: 4px 4px 0px #333; /* EDITED: Same depth as other buttons */
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.back-btn:active {
+    transform: translateY(2px); /* EDITED: Interactive click effect */
+    box-shadow: 2px 2px 0px #333;
+}
+
+.back-btn:hover {
+    filter: brightness(0.9); /* EDITED: Subtle feedback on hover */
 }
 
 /* ==========================================================================
@@ -317,6 +377,30 @@ main {
     height: 30px; 
     display: flex;
     align-items: center;
+    justify-content: space-between; /* EDITED: Push delete button to the right */
+    position: relative; /* EDITED */
+}
+
+.note-content-wrapper {
+    flex-grow: 1; /* EDITED: Takes up most of the line */
+    display: flex;
+    align-items: center;
+}
+
+.delete-note-btn {
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0 10px;
+    line-height: 30px;
+    transition: color 0.2s;
+    z-index: 10; /* EDITED: Ensure it's clickable */
+}
+
+.delete-note-btn:hover {
+    color: red; /* EDITED */
 }
 
 .note-item h3 {
