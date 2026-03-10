@@ -28,6 +28,7 @@ const backBtn = document.getElementById('editor-back-btn'); // EDITED
 const darkModeToggle = document.getElementById('dark-mode-toggle'); // EDITED
 const compactViewToggle = document.getElementById('compact-view-toggle'); // EDITED
 const clearDataBtn = document.getElementById('clear-data-btn'); // EDITED
+const logoutBtn = document.querySelector('.logout-btn'); // EDITED
 let notes = [];
 let tasks = JSON.parse(localStorage.getItem('noteflow_tasks')) || []; // EDITED
 
@@ -92,6 +93,23 @@ if (clearDataBtn) {
             renderNotes();
             renderTasks();
             alert('All data has been cleared.');
+        }
+    });
+}
+
+// Logout Logic /EDITED
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+        if (confirm('Are you sure you want to logout?')) {
+            // Robust redirection that handles various environments (Local, GitHub Pages, etc.)
+            const currentPath = window.location.pathname;
+            if (currentPath.includes('/pages/')) {
+                // Use split to get the root path and append index.html
+                const rootPath = window.location.href.split('/pages/')[0];
+                window.location.href = rootPath + '../index.html';
+            } else {
+                window.location.href = '../index.html';
+            }
         }
     });
 }
@@ -221,7 +239,10 @@ if (verifyBtn) {
         e.preventDefault(); // EDITED
         const codeInput = document.getElementById('verify-code'); // EDITED
         if (codeInput && codeInput.value === '1234') { // EDITED: Basic validation logic
-            window.location.href = 'pages/dashboard.html';
+            // Robust login redirection that handles various environments
+            const currentURL = window.location.href.split('index.html')[0].split('?')[0].split('#')[0];
+            const slash = currentURL.endsWith('/') ? '' : '/';
+            window.location.href = currentURL + slash + 'pages/dashboard.html';
         } else {
             alert('Incorrect verification code! Hint: Try 1234'); // EDITED: Added feedback
         }
@@ -372,29 +393,49 @@ if (backBtn) { // EDITED
     });
 }
 
+// Function to save the current note /EDITED
+const saveNote = () => {
+    if (editView.classList.contains('view-hidden')) return; // Only save if in editor
+
+    const newNote = {
+        title: titleInput.value,
+        content: contentInput.innerHTML,
+        pin: currentNotePin || (currentNoteIndex !== null ? notes[currentNoteIndex].pin : null),
+        starred: isStarred,
+        date: new Date().toISOString()
+    };   
+    
+    if (currentNoteIndex !== null) {
+        notes[currentNoteIndex] = newNote;
+    } else {
+        notes.unshift(newNote);
+    }
+    
+    saveToLocalStorage();
+    closedEditor();
+};
+
 //when the save button is clicked: save the note and return to the list view
 if (saveTick) { // EDITED
-    saveTick.addEventListener('click', () => {
-        const newNote = {
-            title: titleInput.value, //gets the value of the title input
-            content: contentInput.innerHTML, // EDITED: Use innerHTML for rich text
-            pin: currentNotePin || (currentNoteIndex !== null ? notes[currentNoteIndex].pin : null), // EDITED: Keep or update PIN
-            starred: isStarred, // EDITED: Store importance
-            date: new Date().toISOString() // EDITED: Store date for filtering
-        };   
-        
-        if (currentNoteIndex !== null) {
-            //update existing note
-            notes[currentNoteIndex] = newNote; // EDITED
-        } else {
-            //add new note to the top /EDITED
-            notes.unshift(newNote); // EDITED
-        }
-        //save to local storage
-        saveToLocalStorage(); //Saves the note to the local storage
-        closedEditor(); //Closes the editor and returns to the list view
-    });
+    saveTick.addEventListener('click', saveNote);
 }
+
+// Keyboard Shortcuts /EDITED
+window.addEventListener('keydown', (e) => {
+    // Ctrl+N: New Note
+    if (e.ctrlKey && e.key === 'n') {
+        e.preventDefault();
+        const notesSection = document.getElementById('notes');
+        if (notesSection.style.display === 'block') {
+            openEditor();
+        }
+    }
+    // Ctrl+S: Save Note
+    if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        saveNote();
+    }
+});
 
 // This saves the data to the browser
 function saveToLocalStorage() {
@@ -414,12 +455,15 @@ function renderNotes(query = '') { // EDITED: Added query parameter
         (note.content && note.content.toLowerCase().includes(query))
     );
 
-    // Apply sorting based on filter mode /EDITED
-    if (filterMode === 'starred') {
-        filteredNotes.sort((a, b) => (b.starred ? 1 : 0) - (a.starred ? 1 : 0));
-    } else {
-        filteredNotes.sort((a, b) => new Date(b.date) - new Date(a.date));
-    }
+    // Apply sorting logic /EDITED
+    // 1. Always keep Pinned (Starred) notes at the top
+    // 2. Then sort by date (newest first)
+    filteredNotes.sort((a, b) => {
+        if (a.starred !== b.starred) {
+            return b.starred ? 1 : -1;
+        }
+        return new Date(b.date) - new Date(a.date);
+    });
 
     if (filteredNotes.length === 0) { // EDITED
         notesList.innerHTML = '<p>No matching notes found</p>'; // EDITED
@@ -430,10 +474,21 @@ function renderNotes(query = '') { // EDITED: Added query parameter
         const originalIndex = notes.indexOf(note); // Get real index for editing /EDITED
         const noteItem = document.createElement('div');
         noteItem.className = 'note-item';
+        
+        // Format the date /EDITED
+        const dateObj = new Date(note.date);
+        const formattedDate = dateObj.toLocaleDateString(undefined, { 
+            month: 'short', 
+            day: 'numeric' 
+        });
+
         noteItem.innerHTML = `
             <div class="note-content-wrapper" onclick="openEditor(${originalIndex})"> <!-- EDITED -->
-                <h3>${note.starred ? '⭐ ' : ''}${note.pin ? '🔒 ' : ''}${note.title || 'Untitled'}</h3> <!-- EDITED: Show star and lock icon -->
-                <p>${note.content.replace(/<[^>]*>/g, '').substring(0, 30)}...</p> <!-- EDITED: Strip HTML for preview -->
+                <div class="note-info">
+                    <h3>${note.starred ? '⭐ ' : ''}${note.pin ? '🔒 ' : ''}${note.title || 'Untitled'}</h3>
+                    <p>${note.content.replace(/<[^>]*>/g, '').substring(0, 20)}...</p>
+                </div>
+                <span class="note-date">${formattedDate}</span> <!-- EDITED: Added date visibility -->
             </div>
             <button class="delete-note-btn" onclick="deleteNote(${originalIndex})">×</button> <!-- EDITED -->
         `;
