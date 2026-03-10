@@ -234,6 +234,7 @@ main p:hover {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease; /* EDITED: Added transition */
 }
 
 .workspace {
@@ -241,6 +242,7 @@ main p:hover {
     padding: 120px 0 0 0; /* Space for the logo at the top */
     width: 100%;
     align-items: flex-start; /* EDITED: Align items to the top */
+    transition: padding-top 0.6s cubic-bezier(0.4, 0, 0.2, 1); /* EDITED: Added transition */
 }
 
 .focus-mode .workspace {
@@ -250,6 +252,10 @@ main p:hover {
 aside {
     width: var(--margin-width); /*Strictly 79px*/
     flex-shrink: 0;
+    transition: margin-left 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease; /* EDITED: Added transition */
+    display: flex; /* EDITED: Added flexbox to aside */
+    flex-direction: column;
+    height: calc(100vh - 120px); /* EDITED: Fill the rest of the height */
 }
 
 .margin-nav {
@@ -258,6 +264,7 @@ aside {
     width: 100%; /*Fills the 79px margin perfectly*/
     padding-top: 0px; 
     margin-top: -3px; /* EDITED: Tiny space under text to prevent line overlap */
+    flex-grow: 1; /* EDITED: Grow to fill space */
 }
 .nav-btn {
     width: 100%; /*stays strictly 79px*/
@@ -276,15 +283,30 @@ aside {
     padding: 0;
     color: var(--ink-color);
 }
+
+.logout-btn {
+    margin-top: auto; /* Push to the bottom /EDITED */
+    margin-bottom: 30px !important; /* skip one line /EDITED */
+    background-color: var(--accent-color) !important; /* highlight /EDITED */
+    border: 2px solid #333 !important;
+    border-radius: 5px;
+    font-weight: bold;
+    box-shadow: 2px 2px 0px #333;
+    width: 90% !important; /* leave a small gap /EDITED */
+    margin-left: 5% !important; /* center it /EDITED */
+}
+
 main {
     padding-left: 20px; /* same as margin width to align with the margin */
     padding-top: 0px; 
     margin-top: -3px; /* EDITED: Tiny space under text to prevent line overlap */
     flex-grow: 1;/* takes up the resy of the page*/
+    transition: padding-left 0.6s cubic-bezier(0.4, 0, 0.2, 1); /* EDITED: Added transition */
 }
 
 #notes, #tasks, #settings {
     display: none;
+    position: relative; /* EDITED: Added for smooth view transitions */
 }
 
 /* this is for the floating action button (the pen)*/
@@ -356,24 +378,258 @@ main {
     height: calc(100vh - 120px); 
     line-height: 30px;
     border: none;
-    background: transparent;
     outline: none;
     resize: none;
     color: var(--ink-color);
     padding: 0;
     margin-top: 0px; 
+    background-image: linear-gradient(transparent 29px, #130e0e 29px); /* EDITED: Added lines directly to textarea */
+    background-size: 100% 30px; /* EDITED: Match line height */
+    background-attachment: local; /* EDITED: This makes the background scroll with the text */
+    background-color: transparent; /* EDITED: Ensure ivory paper shows through */
+    overflow-y: auto; /* EDITED: Enable internal scrolling for div */
 }
 
-#notes h2 {
-    margin: 0; /* removes default browser margins*/
-    padding: 0; /* removes default browser padding*/
-    font-size: 1.5rem; /* EDITED: Reduced size to fit better within the lines */
-    line-height: 30px; /* matches the height to center the text /locked to the 30px grid*/
-    height: 30px; /** matches the line height/locked to the 30px grid*/
-    text-transform: uppercase; 
-    margin-bottom: 30px; /*puts exactly one empty line after the title/header*/
+/* Dashboard Search & Filter Styling /EDITED */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.search-filter-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+#note-search {
+    padding: 8px 15px;
+    border: 2px solid #333;
+    border-radius: 20px;
+    background: ivory;
+    font-family: inherit;
+    outline: none;
+    width: 200px;
+    transition: width 0.3s;
+}
+
+#note-search:focus {
+    width: 250px;
+    border-color: var(--accent-color);
+}
+
+#filter-btn {
+    background-color: var(--accent-color);
+    border: 2px solid #333;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px #333;
+}
+
+/* Star Button /EDITED */
+.star-btn {
+    background-color: var(--accent-color);
+    border: 2px solid #333;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
     display: flex;
     align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px #333;
+    margin-right: 15px;
+}
+
+.star-btn.active {
+    background-color: gold; /* EDITED: Show active state for importance */
+}
+
+/* Padlock Button /EDITED */
+.lock-btn {
+    background-color: var(--accent-color);
+    border: 2px solid #333;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px #333;
+    margin-right: 15px;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+}
+
+/* Floating Rich Text Toolbar /EDITED */
+.floating-toolbar {
+    position: absolute;
+    display: none;
+    background: rgba(51, 51, 51, 0.8); /* EDITED: Faint background */
+    backdrop-filter: blur(4px); /* EDITED: Glass effect */
+    padding: 8px;
+    border-radius: 12px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    z-index: 10000;
+    gap: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.floating-toolbar button {
+    background: #444;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.floating-toolbar button:hover {
+    background: var(--accent-color);
+    color: black;
+}
+
+/* Content Editable Placeholder /EDITED */
+[contenteditable=true]:empty:before {
+    content: attr(data-placeholder);
+    color: #999;
+    font-style: italic;
+}
+
+/* Task & Settings Styling /EDITED */
+.add-btn {
+    background-color: var(--accent-color);
+    border: 2px solid #333;
+    border-radius: 20px;
+    padding: 8px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 2px 2px 0px #333;
+    font-family: inherit;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    height: 30px;
+    margin-bottom: 30px;
+    line-height: 30px;
+}
+
+.task-item.completed span {
+    text-decoration: line-through;
+    color: #999;
+}
+
+.task-checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #333;
+    border-radius: 4px;
+    cursor: pointer;
+    background: ivory;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.task-item.completed .task-checkbox {
+    background: var(--accent-color);
+}
+
+.settings-container {
+    width: 100%;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 30px;
+    margin-bottom: 30px;
+    line-height: 30px;
+}
+
+/* Custom Switch for Settings /EDITED */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+    border: 2px solid #333;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+    border: 1px solid #333;
+}
+
+input:checked + .slider {
+    background-color: var(--accent-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.danger-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 5px 15px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 2px 2px 0px #333;
+}
+
+.dashboard-header h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 1.5rem;
+    line-height: 30px;
+    height: 30px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    margin-top: -6px; /* EDITED: Increased negative margin for better visual alignment with larger font */
 }
 
 .note-item {
@@ -386,6 +642,7 @@ main {
     align-items: center;
     justify-content: space-between; /* EDITED: Push delete button to the right */
     position: relative; /* EDITED */
+    margin-top: -6px; /* EDITED: Lift note item above the line */
 }
 
 .note-content-wrapper {
@@ -409,7 +666,7 @@ main {
     box-shadow: 2px 2px 0px #333; /* EDITED: Same shadow as other primary buttons */
     transition: transform 0.1s, background-color 0.2s;
     z-index: 10;
-    margin-top: -3px; /* EDITED: Tiny space under button to prevent line overlap */
+    margin-top: -6px; /* EDITED: Lift button above the line */
 }
 
 .delete-note-btn:hover {
@@ -426,7 +683,6 @@ main {
     margin: 0;
     font-size: 1.2rem;
     display: inline;
-    vertical-align: bottom; /* EDITED */
 }
 
 .note-item p {
@@ -435,14 +691,42 @@ main {
     font-style: italic;
     color: #666;
     margin-left: 10px;
-    vertical-align: bottom; /* EDITED */
 }
 
 /* --- THE FOCUS MODE (TEARING DOWN THE SIDEBAR)--- */
-/* EDITED: Corrected selector to only hide logo in focus mode */
-.focus-mode aside,
+/* EDITED: Slide out instead of instant hide */
+.focus-mode aside {
+    margin-left: calc(-1 * var(--margin-width));
+    opacity: 0;
+    pointer-events: none;
+}
+
 .focus-mode #dashboard-main {
-    display: none; 
+    transform: translateX(-150%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Smooth View Transitions /EDITED */
+.view-container {
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.view-hidden {
+    opacity: 0;
+    transform: translateY(15px);
+    pointer-events: none;
+    position: absolute; /* EDITED: Take out of flow to let the other view slide into place */
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+/* EDITED: Remove the main background lines in focus mode to prevent duplicates */
+.focus-mode.notebook-skin {
+    background-image: linear-gradient(90deg, transparent 79px, red 79px, red 81px, transparent 81px);
 }
 
 /*this emsure that the paper stays put and doesn't mess up when the sidebar vanishes*/
@@ -466,4 +750,86 @@ main {
 .nav-btn.active {
     font-weight: 900; 
     text-decoration: underline; 
+}
+
+/* --- SETTINGS STYLES --- */
+/* EDITED: Dark Mode Visibility */
+.dark-mode {
+    background-color: #1a1a1a;
+    color: white; /* EDITED: Pure white for better contrast */
+}
+
+.dark-mode.notebook-skin {
+    background-color: #1a1a1a;
+    background-image: linear-gradient(90deg, transparent 79px, #ff4d4d 79px, #ff4d4d 81px, transparent 81px), 
+                      linear-gradient(transparent 29px, rgba(255, 255, 255, 0.2) 29px); /* EDITED: Faint white lines for visibility */
+}
+
+/* EDITED: Ensure focus mode doesn't double up lines in dark mode */
+.dark-mode.focus-mode.notebook-skin {
+    background-image: linear-gradient(90deg, transparent 79px, #ff4d4d 79px, #ff4d4d 81px, transparent 81px);
+}
+
+.dark-mode .line-locked-title, 
+.dark-mode .line-locked-content {
+    color: white; /* EDITED: Ensure editor text is visible */
+}
+
+.dark-mode .line-locked-content {
+    background-image: linear-gradient(transparent 29px, rgba(255, 255, 255, 0.2) 29px); /* EDITED: Faint white lines in editor */
+}
+
+.dark-mode #dashboard-main, 
+.dark-mode .floating-toolbar, 
+.dark-mode #note-search {
+    background-color: #333;
+    color: white;
+    box-shadow: 5px 5px 0px #000;
+}
+
+.dark-mode #note-search::placeholder {
+    color: #999;
+}
+
+.dark-mode .nav-btn, 
+.dark-mode .dashboard-header h2,
+.dark-mode .note-item h3 {
+    color: white;
+}
+
+.dark-mode .note-item p {
+    color: #ccc; /* Slightly dimmed for subtitle effect */
+}
+
+.dark-mode .task-checkbox {
+    background: #333;
+    border-color: #555;
+}
+
+.dark-mode .task-item.completed span {
+    color: #777;
+}
+
+.dark-mode .save-tick-btn, 
+.dark-mode .back-sign,
+.dark-mode .star-btn,
+.dark-mode .lock-btn,
+.dark-mode #fab-pen,
+.dark-mode .delete-note-btn {
+    border-color: #555;
+    color: #1a1a1a; /* Keep dark ink color on accented buttons for visibility */
+}
+
+/* EDITED: Compact View */
+.compact-view .task-item, .compact-view .setting-item, .compact-view .note-item {
+    height: 30px;
+    margin-bottom: 0;
+}
+
+.compact-view .note-item h3, .compact-view .note-item p {
+    line-height: 30px;
+}
+
+.compact-view .nav-btn {
+    margin-bottom: 0;
 }

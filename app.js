@@ -16,11 +16,159 @@ const listView = document.getElementById('notes-list-view')
 const editView = document.getElementById('notes-editor-view')
 const titleInput = document.getElementById('note-title-input')
 const contentInput = document.getElementById('note-content-input')
+const searchInput = document.getElementById('note-search'); // EDITED
+const filterBtn = document.getElementById('filter-btn'); // EDITED
+const lockBtn = document.getElementById('editor-lock-btn'); // EDITED
+const starBtn = document.getElementById('editor-star-btn'); // EDITED
+const tasksList = document.getElementById('tasks-list'); // EDITED
+const addTaskBtn = document.getElementById('add-task-btn'); // EDITED
+const toolbar = document.getElementById('text-toolbar'); // EDITED
 const saveTick = document.getElementById('editor-save-btn'); // EDITED
 const backBtn = document.getElementById('editor-back-btn'); // EDITED
- let notes = [];
+const darkModeToggle = document.getElementById('dark-mode-toggle'); // EDITED
+const compactViewToggle = document.getElementById('compact-view-toggle'); // EDITED
+const clearDataBtn = document.getElementById('clear-data-btn'); // EDITED
+let notes = [];
+let tasks = JSON.parse(localStorage.getItem('noteflow_tasks')) || []; // EDITED
+
+// Task Management Logic /EDITED
+function renderTasks() {
+    if (!tasksList) return;
+    tasksList.innerHTML = '';
+    tasks.forEach((task, index) => {
+        const taskItem = document.createElement('div');
+        taskItem.className = `task-item ${task.completed ? 'completed' : ''}`;
+        taskItem.innerHTML = `
+            <div class="task-checkbox" onclick="toggleTask(${index})">
+                ${task.completed ? '✓' : ''}
+            </div>
+            <span>${task.text}</span>
+            <button class="delete-note-btn" onclick="deleteTask(${index})" style="margin-left: auto;">×</button>
+        `;
+        tasksList.appendChild(taskItem);
+    });
+}
+
+function toggleTask(index) {
+    tasks[index].completed = !tasks[index].completed;
+    saveTasks();
+    renderTasks();
+}
+
+function deleteTask(index) {
+    tasks.splice(index, 1);
+    saveTasks();
+    renderTasks();
+}
+
+function saveTasks() {
+    localStorage.setItem('noteflow_tasks', JSON.stringify(tasks));
+}
 
 
+
+// Settings Logic /EDITED
+if (darkModeToggle) {
+    darkModeToggle.addEventListener('change', () => {
+        document.body.classList.toggle('dark-mode', darkModeToggle.checked);
+        localStorage.setItem('noteflow_dark_mode', darkModeToggle.checked);
+    });
+}
+
+if (compactViewToggle) {
+    compactViewToggle.addEventListener('change', () => {
+        document.body.classList.toggle('compact-view', compactViewToggle.checked);
+        localStorage.setItem('noteflow_compact_view', compactViewToggle.checked);
+    });
+}
+
+if (clearDataBtn) {
+    clearDataBtn.addEventListener('click', () => {
+        if (confirm('Are you sure you want to delete ALL notes and tasks? This cannot be undone.')) {
+            localStorage.removeItem('notes');
+            localStorage.removeItem('noteflow_tasks');
+            notes = [];
+            tasks = [];
+            renderNotes();
+            renderTasks();
+            alert('All data has been cleared.');
+        }
+    });
+}
+
+// Function to load settings on startup /EDITED
+function loadSettings() {
+    const isDarkMode = localStorage.getItem('noteflow_dark_mode') === 'true';
+    if (darkModeToggle) darkModeToggle.checked = isDarkMode;
+    document.body.classList.toggle('dark-mode', isDarkMode);
+
+    const isCompactView = localStorage.getItem('noteflow_compact_view') === 'true';
+    if (compactViewToggle) compactViewToggle.checked = isCompactView;
+    document.body.classList.toggle('compact-view', isCompactView);
+}
+
+// Search Logic /EDITED
+if (searchInput) {
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase();
+        renderNotes(query);
+    });
+}
+
+// Filter Logic /EDITED
+let filterMode = 'date'; // 'date' or 'starred'
+if (filterBtn) {
+    filterBtn.addEventListener('click', () => {
+        filterMode = filterMode === 'date' ? 'starred' : 'date';
+        alert(`Sorting by: ${filterMode === 'date' ? 'Date' : 'Importance (Starred)'}`);
+        renderNotes(searchInput ? searchInput.value.toLowerCase() : '');
+    });
+}
+
+// Rich Text Formatting /EDITED
+function formatText(command, value = null) {
+    document.execCommand(command, false, value);
+    contentInput.focus();
+}
+
+// Floating Toolbar Logic /EDITED
+if (contentInput) {
+    document.addEventListener('selectionchange', () => {
+        const selection = window.getSelection();
+        if (selection.toString().length > 0 && document.activeElement === contentInput) {
+            const range = selection.getRangeAt(0);
+            const rect = range.getBoundingClientRect();
+            toolbar.style.display = 'flex';
+            toolbar.style.top = `${rect.top - 40 + window.scrollY}px`;
+            toolbar.style.left = `${rect.left + window.scrollX}px`;
+        } else {
+            toolbar.style.display = 'none';
+        }
+    });
+}
+
+// Note Star Logic /EDITED
+let isStarred = false;
+if (starBtn) {
+    starBtn.addEventListener('click', () => {
+        isStarred = !isStarred;
+        starBtn.classList.toggle('active', isStarred);
+    });
+}
+
+// Note Locking Logic /EDITED
+let currentNotePin = null;
+if (lockBtn) {
+    lockBtn.addEventListener('click', () => {
+        const pin = prompt('Enter 4-digit PIN to lock/unlock:');
+        if (pin && pin.length === 4) {
+            currentNotePin = pin;
+            alert('Note PIN set! Save to apply.');
+        } else {
+            alert('Invalid PIN. Must be 4 digits.');
+        }
+    });
+}
 
 //2. we introduce event listenenrs into the systen
 if (loginBtn) {
@@ -95,6 +243,7 @@ window.onload = () => {
         notesSection.style.display = 'block';
         handleNavigation();
         renderNotes(); // Show the notes immediately!
+        loadSettings(); // EDITED: Load user settings
     }
 };
 
@@ -126,6 +275,16 @@ function handleNavigation() { // EDITED
             if (activeSection) {
                 activeSection.style.display = 'block';
             }
+
+            // Render specific content based on tab /EDITED
+            if (target === 'tasks') renderTasks();
+
+            // Show/hide FAB based on the active section /EDITED
+            if (target === 'notes' || target === 'tasks') {
+                fabPen.style.display = 'flex';
+            } else {
+                fabPen.style.display = 'none';
+            }
         });
     });
 }
@@ -141,19 +300,34 @@ const openEditor = (index = null) => { // EDITED
     document.body.classList.add('focus-mode'); // EDITED
 
     currentNoteIndex = index; // Store if we are editing an old note or new /EDITED
+    currentNotePin = null; // Reset PIN for current session
+    isStarred = false; // EDITED
+    if (starBtn) starBtn.classList.remove('active'); // EDITED
     
     if (index !== null) {
+        const note = notes[index];
+        // If note is locked, ask for PIN /EDITED
+        if (note.pin) {
+            const pin = prompt('This note is locked. Enter 4-digit PIN:');
+            if (pin !== note.pin) {
+                alert('Incorrect PIN!');
+                closedEditor();
+                return;
+            }
+        }
         //if editing existing: fill inputs with saved data
-        titleInput.value = notes[index].title;
-        contentInput.value = notes[index].content;
+        titleInput.value = note.title;
+        contentInput.innerHTML = note.content; // EDITED: Use innerHTML for rich text
+        isStarred = !!note.starred; // EDITED
+        if (starBtn) starBtn.classList.toggle('active', isStarred); // EDITED
     } else {
         //if new note: clear the inputs
         titleInput.value = '';
-        contentInput.value = '';
+        contentInput.innerHTML = ''; // EDITED: Use innerHTML for rich text
     }
 
-    listView.style.display = 'none'; //hide the list view
-    editView.style.display = 'block'; //show the editor view
+    listView.classList.add('view-hidden'); // EDITED: Use class for smooth transition
+    editView.classList.remove('view-hidden'); // EDITED: Use class for smooth transition
 };
 
 //Function to close the writing page and return to the list view /EDITED
@@ -161,8 +335,8 @@ const closedEditor = () => { // EDITED
     // bring the sidebar and Logo back /EDITED
     document.body.classList.remove('focus-mode'); // EDITED
 
-    editView.style.display = 'none'; //hide the editor view 
-    listView.style.display = 'block'; //show the list view
+    editView.classList.add('view-hidden'); // EDITED: Use class for smooth transition
+    listView.classList.remove('view-hidden'); // EDITED: Use class for smooth transition
     renderNotes(); //refresh the list to show the new/updated note
 };
 
@@ -172,7 +346,22 @@ const closedEditor = () => { // EDITED
 const fabPen = document.getElementById('fab-pen'); // EDITED
 if (fabPen) { // EDITED
     fabPen.addEventListener('click', () => {
-        openEditor();
+        const notesSection = document.getElementById('notes');
+        const isNotesActive = notesSection.style.display === 'block';
+        const isEditing = !editView.classList.contains('view-hidden');
+
+        if (isNotesActive && !isEditing) {
+            openEditor();
+        } else if (isNotesActive && isEditing) {
+            // Already editing, maybe do nothing or save?
+        } else {
+            const text = prompt('Enter task description:');
+            if (text) {
+                tasks.push({ text, completed: false });
+                saveTasks();
+                renderTasks();
+            }
+        }
     });
 }
 
@@ -188,7 +377,10 @@ if (saveTick) { // EDITED
     saveTick.addEventListener('click', () => {
         const newNote = {
             title: titleInput.value, //gets the value of the title input
-            content: contentInput.value //gets the value of the content input
+            content: contentInput.innerHTML, // EDITED: Use innerHTML for rich text
+            pin: currentNotePin || (currentNoteIndex !== null ? notes[currentNoteIndex].pin : null), // EDITED: Keep or update PIN
+            starred: isStarred, // EDITED: Store importance
+            date: new Date().toISOString() // EDITED: Store date for filtering
         };   
         
         if (currentNoteIndex !== null) {
@@ -210,26 +402,40 @@ function saveToLocalStorage() {
 }
 
 // This draws the notes on the screen
-function renderNotes() {
+function renderNotes(query = '') { // EDITED: Added query parameter
     const notesList = document.getElementById('notes-list');
     if (!notesList) return; // EDITED: Safety check
 
     notesList.innerHTML = ''; 
 
-    if (notes.length === 0) {
-        notesList.innerHTML = '<p>Your saved notes will appear here</p>';
+    // Filter notes based on search query /EDITED
+    let filteredNotes = notes.filter(note => 
+        (note.title && note.title.toLowerCase().includes(query)) || 
+        (note.content && note.content.toLowerCase().includes(query))
+    );
+
+    // Apply sorting based on filter mode /EDITED
+    if (filterMode === 'starred') {
+        filteredNotes.sort((a, b) => (b.starred ? 1 : 0) - (a.starred ? 1 : 0));
+    } else {
+        filteredNotes.sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
+
+    if (filteredNotes.length === 0) { // EDITED
+        notesList.innerHTML = '<p>No matching notes found</p>'; // EDITED
         return;
     }
 
-    notes.forEach((note, index) => {
+    filteredNotes.forEach((note, index) => { // EDITED
+        const originalIndex = notes.indexOf(note); // Get real index for editing /EDITED
         const noteItem = document.createElement('div');
         noteItem.className = 'note-item';
         noteItem.innerHTML = `
-            <div class="note-content-wrapper" onclick="openEditor(${index})"> <!-- EDITED -->
-                <h3>${note.title || 'Untitled'}</h3>
-                <p>${note.content.substring(0, 30)}...</p>
+            <div class="note-content-wrapper" onclick="openEditor(${originalIndex})"> <!-- EDITED -->
+                <h3>${note.starred ? '⭐ ' : ''}${note.pin ? '🔒 ' : ''}${note.title || 'Untitled'}</h3> <!-- EDITED: Show star and lock icon -->
+                <p>${note.content.replace(/<[^>]*>/g, '').substring(0, 30)}...</p> <!-- EDITED: Strip HTML for preview -->
             </div>
-            <button class="delete-note-btn" onclick="deleteNote(${index})">×</button> <!-- EDITED: Added delete button -->
+            <button class="delete-note-btn" onclick="deleteNote(${originalIndex})">×</button> <!-- EDITED -->
         `;
         notesList.appendChild(noteItem);
     });
