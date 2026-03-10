@@ -243,6 +243,10 @@ main p:hover {
     align-items: flex-start; /* EDITED: Align items to the top */
 }
 
+.focus-mode .workspace {
+    padding-top: 0; /* EDITED: Remove the 120px top spacing only in Focus Mode */
+}
+
 aside {
     width: var(--margin-width); /*Strictly 79px*/
     flex-shrink: 0;
@@ -252,7 +256,8 @@ aside {
     display: flex; /* keeps buttons in a column*/
     flex-direction: column; /* Vertical stack 8*/
     width: 100%; /*Fills the 79px margin perfectly*/
-    padding-top: 0px; /* EDITED: Shift buttons so text baseline sits ON the line//removed the 8px that was pushing the buttons off the lines */
+    padding-top: 0px; 
+    margin-top: -3px; /* EDITED: Tiny space under text to prevent line overlap */
 }
 .nav-btn {
     width: 100%; /*stays strictly 79px*/
@@ -273,7 +278,8 @@ aside {
 }
 main {
     padding-left: 20px; /* same as margin width to align with the margin */
-    padding-top: 8px; /* EDITED: Shift content so text baseline sits ON the line */
+    padding-top: 0px; 
+    margin-top: -3px; /* EDITED: Tiny space under text to prevent line overlap */
     flex-grow: 1;/* takes up the resy of the page*/
 }
 
@@ -316,6 +322,7 @@ main {
     font-weight: bold;
     box-shadow: 2px 2px 0px #333; 
     transition: transform 0.1s ease;
+    margin-top: -3px; /* EDITED: Tiny space under button to prevent line overlap */
 }
 
 .back-sign:active, .save-tick-btn:active {
@@ -388,19 +395,31 @@ main {
 }
 
 .delete-note-btn {
-    background: none;
-    border: none;
-    color: #999;
-    font-size: 1.5rem;
+    background-color: var(--accent-color); /* EDITED: Same visibility as FAB pen */
+    border: 2px solid #333; /* EDITED: Matching border style */
+    border-radius: 50%; /* EDITED: Round button */
+    width: 26px; /* EDITED: Fits inside the 30px row */
+    height: 26px; /* EDITED: Fits inside the 30px row */
+    color: #333; /* EDITED: Dark ink color */
+    font-size: 1.2rem;
     cursor: pointer;
-    padding: 0 10px;
-    line-height: 30px;
-    transition: color 0.2s;
-    z-index: 10; /* EDITED: Ensure it's clickable */
+    display: flex; /* EDITED: Center the icon */
+    align-items: center; /* EDITED */
+    justify-content: center; /* EDITED */
+    box-shadow: 2px 2px 0px #333; /* EDITED: Same shadow as other primary buttons */
+    transition: transform 0.1s, background-color 0.2s;
+    z-index: 10;
+    margin-top: -3px; /* EDITED: Tiny space under button to prevent line overlap */
 }
 
 .delete-note-btn:hover {
-    color: red; /* EDITED */
+    background-color: #ff4d4d; /* EDITED: Turns red on hover for warning */
+    color: white; /* EDITED */
+}
+
+.delete-note-btn:active {
+    transform: scale(0.9); /* EDITED */
+    box-shadow: none;
 }
 
 .note-item h3 {
@@ -429,7 +448,8 @@ main {
 /*this emsure that the paper stays put and doesn't mess up when the sidebar vanishes*/
 .focus-mode main {
     padding-left: calc(var(--margin-width) + 15px); 
-    padding-top: 8px; /* EDITED: Align focus content so text sits ON the line */
+    padding-top: 0px; 
+    margin-top: -3px; /* EDITED: Tiny space under text to prevent line overlap */
 }
 
 /* --- THE EDITOR NAVIGATION (BACK & SAVE BUTTONS) --- */
